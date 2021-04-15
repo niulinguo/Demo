@@ -1,2 +1,3 @@
+include ':structure'
 include ':app'
 rootProject.name = "Demo"
