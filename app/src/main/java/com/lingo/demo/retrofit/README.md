@@ -15,7 +15,14 @@ retrofit2.call 代理了 okhttp3.call
 通过CallAdapter实现到主线程的切换
 适配RxJava
 
-### 责任链模式
+### 工厂模式
+RequestFactory
+CallFactory
+CallAdapterFactory
+ConvertFactory
+
+### 建造者模式
+Retrofit.Builder
 
 ## 激进验证
 validateEagerly
