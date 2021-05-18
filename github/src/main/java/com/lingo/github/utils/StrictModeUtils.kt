@@ -7,7 +7,7 @@ import java.util.concurrent.Executor
 
 object StrictModeUtils {
 
-    private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore)
+    private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore, LeakCanaryIgnore)
     private val vmPolicyIgnores = listOf(BuglyIgnore)
 
     fun init(debug: Boolean, executor: Executor) {
@@ -69,6 +69,16 @@ object StrictModeUtils {
 
 interface ViolationIgnore {
     fun ignore(violation: Violation): Boolean
+}
+
+object LeakCanaryIgnore : ViolationIgnore {
+    override fun ignore(violation: Violation): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                && violation is DiskReadViolation
+                && violation.stackTrace.let { stackTrace ->
+            stackTrace.any { it.className.startsWith("leakcanary.") }
+        }
+    }
 }
 
 object AwareBitmapCacherIgnore : ViolationIgnore {
