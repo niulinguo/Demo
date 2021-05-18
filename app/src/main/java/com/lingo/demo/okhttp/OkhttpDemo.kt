@@ -3,6 +3,7 @@ package com.lingo.demo.okhttp
 import okhttp3.*
 import java.io.IOException
 
+@Suppress("unused")
 object OkhttpDemo {
     fun main() {
         val url = "https://api.github.com/users/rengwuxian/repos"

@@ -2,13 +2,13 @@ package com.lingo.github.utils
 
 import android.os.Build
 import android.os.StrictMode
-import android.os.strictmode.DiskReadViolation
-import android.os.strictmode.Violation
+import android.os.strictmode.*
 import java.util.concurrent.Executor
 
 object StrictModeUtils {
 
     private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore)
+    private val vmPolicyIgnores = listOf(BuglyIgnore)
 
     fun init(debug: Boolean, executor: Executor) {
         if (debug) {
@@ -24,6 +24,7 @@ object StrictModeUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             builder.penaltyListener(executor) { violation ->
                 if (threadPolicyIgnores.all { !it.ignore(violation) }) {
+                    println("thread policy")
                     throw violation
                 }
             }
@@ -43,7 +44,10 @@ object StrictModeUtils {
             builder
                 .detectNonSdkApiUsage()
                 .penaltyListener(executor) { violation ->
-                    throw violation
+                    if (vmPolicyIgnores.all { !it.ignore(violation) }) {
+                        println("vm policy")
+                        throw violation
+                    }
                 }
         }
 
@@ -73,6 +77,21 @@ object AwareBitmapCacherIgnore : ViolationIgnore {
                 && violation is DiskReadViolation
                 && violation.stackTrace.let { stackTrace ->
             stackTrace.any { it.className == "android.graphics.AwareBitmapCacher" }
+        }
+    }
+}
+
+object BuglyIgnore : ViolationIgnore {
+    override fun ignore(violation: Violation): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && violation is LeakedClosableViolation) {
+            return violation.cause?.stackTrace?.let { stackTrace ->
+                stackTrace.any { it.className.startsWith("com.tencent.bugly") }
+            } ?: false
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                && (violation is UntaggedSocketViolation || violation is NonSdkApiUsedViolation)
+                && violation.stackTrace.let { stackTrace ->
+            stackTrace.any { it.className.startsWith("com.tencent.bugly") }
         }
     }
 }

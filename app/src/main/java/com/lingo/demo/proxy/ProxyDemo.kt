@@ -10,11 +10,10 @@ object ProxyDemo {
         val elements = LogPrinter::class.java
         val logPrinter = Proxy.newProxyInstance(
             elements.classLoader, arrayOf(elements),
-            fun(proxy: Any?, method: Method, args: Array<Any>): Any? {
+            fun(proxy: Any?, method: Method, args: Array<Any>) {
                 Log.i("ProxyDemo", proxy.toString())
                 Log.i("ProxyDemo", method.toString())
                 Log.i("ProxyDemo", args.toString())
-                return null
             }
         )
         if (logPrinter is LogPrinter) {

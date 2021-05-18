@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
+@Suppress("unused")
 object RetrofitDemo {
     fun main() {
         val retrofit = Retrofit.Builder()
@@ -23,7 +24,7 @@ object RetrofitDemo {
         testRx(service)
     }
 
-    fun testRx(service: GithubService) {
+    private fun testRx(service: GithubService) {
         val single = service.listReposRx("octocat")
         single.subscribe()
     }
