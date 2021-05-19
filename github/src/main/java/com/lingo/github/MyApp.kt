@@ -5,12 +5,12 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
+import com.facebook.stetho.Stetho
 import com.lingo.github.utils.AppExecutors
 import com.lingo.github.utils.StrictModeUtils
 import com.tencent.bugly.crashreport.CrashReport
 import java.io.BufferedReader
 import java.io.FileReader
-
 
 @Suppress("unused")
 class MyApp : Application() {
@@ -42,6 +42,8 @@ class MyApp : Application() {
         handler.post {
             StrictMode.setThreadPolicy(oldThreadPolicy)
         }
+
+        Stetho.initializeWithDefaults(context)
     }
 
     /**
