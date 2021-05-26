@@ -11,7 +11,7 @@ data class XImageView<T>(
     val imageView: ImageView,
     val sizeOption: SizeOption?,
     val holderOption: HolderOption,
-    val animateOption: AnimateOption,
+    val animateOption: AnimateOption?,
     val thumbnailOption: ThumbnailOption?
 ) {
 
@@ -64,8 +64,8 @@ data class XImageView<T>(
             val imageView =
                 this.imageView ?: throw createNotNullException("imageView")
             val sizeOption = this.sizeOption
-            val holderOption = this.holderOption ?: throw createNotNullException("holderOption")
-            val animateOption = this.animateOption ?: throw createNotNullException("animateOption")
+            val holderOption = this.holderOption ?: HolderOption()
+            val animateOption = this.animateOption
             val thumbnailOption =
                 this.thumbnailOption
             return XImageView(

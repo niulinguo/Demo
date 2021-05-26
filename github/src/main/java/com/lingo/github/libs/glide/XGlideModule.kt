@@ -2,6 +2,7 @@ package com.lingo.github.libs.glide
 
 import android.content.Context
 import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
@@ -9,10 +10,15 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 
+@GlideModule
 class XGlideModule : AppGlideModule() {
     companion object {
         private const val DISK_CACHE_NAME = "glide_image"
         private const val MB = 1024 * 1024L
+    }
+
+    override fun isManifestParsingEnabled(): Boolean {
+        return false
     }
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {

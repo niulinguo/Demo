@@ -19,19 +19,19 @@ class GlideImageAction<T> : XImageActionBase<T> {
             .load(url)
     }
 
-    override fun loadImage(context: Context, imageView: XImageView<T>) {
+    override fun loadImage(context: Context, imageView: XImageView<out T>) {
         requestBuilder(context, imageView.url)
             .into(imageView.imageView)
     }
 
-    override fun loadImageWithHolder(context: Context, imageView: XImageView<T>) {
+    override fun loadImageWithHolder(context: Context, imageView: XImageView<out T>) {
         requestBuilder(context, imageView.url)
             .error(imageView.holderOption.errorHolder)
             .placeholder(imageView.holderOption.placeHolder)
             .into(imageView.imageView)
     }
 
-    override fun loadImageWithThumbnail(context: Context, imageView: XImageView<T>) {
+    override fun loadImageWithThumbnail(context: Context, imageView: XImageView<out T>) {
         val thumbnailUrl: String? = imageView.thumbnailOption?.url
         if (thumbnailUrl == null) {
             requestBuilder(context, imageView.url)
@@ -46,7 +46,7 @@ class GlideImageAction<T> : XImageActionBase<T> {
         }
     }
 
-    override fun loadImageWithSize(context: Context, imageView: XImageView<T>) {
+    override fun loadImageWithSize(context: Context, imageView: XImageView<out T>) {
         val sizeOption = imageView.sizeOption
         if (sizeOption == null) {
             loadImage(context, imageView)
@@ -57,32 +57,32 @@ class GlideImageAction<T> : XImageActionBase<T> {
         }
     }
 
-    override fun loadImageWithAnim(context: Context, imageView: XImageView<T>) {
+    override fun loadImageWithAnim(context: Context, imageView: XImageView<out T>) {
         loadImage(context, imageView)
     }
 
-    override fun loadImageWithCache(context: Context, imageView: XImageView<T>) {
+    override fun loadImageWithCache(context: Context, imageView: XImageView<out T>) {
         requestBuilder(context, imageView.url)
             .diskCacheStrategy(DiskCacheStrategy.ALL) // TODO: 抽离
             .skipMemoryCache(true)
             .into(imageView.imageView)
     }
 
-    override fun loadCircleImage(context: Context, imageView: XImageView<T>) {
+    override fun loadCircleImage(context: Context, imageView: XImageView<out T>) {
         requestBuilder(context, imageView.url)
             .dontAnimate()
             .transform(CircleCrop())
             .into(imageView.imageView)
     }
 
-    override fun loadBlurImage(context: Context, imageView: XImageView<T>) {
+    override fun loadBlurImage(context: Context, imageView: XImageView<out T>) {
         requestBuilder(context, imageView.url)
             .dontAnimate()
             .transform(BlurTransformation(context))
             .into(imageView.imageView)
     }
 
-    override fun loadGifImage(context: Context, imageView: XImageView<T>) {
+    override fun loadGifImage(context: Context, imageView: XImageView<out T>) {
         Glide.with(context)
             .asGif()
             .load(imageView.url)
@@ -93,7 +93,7 @@ class GlideImageAction<T> : XImageActionBase<T> {
 
     override fun loadImageListener(
         context: Context,
-        imageView: XImageView<T>,
+        imageView: XImageView<out T>,
         listener: XImageLoadListener<T, Drawable>
     ) {
         requestBuilder(context, imageView.url)

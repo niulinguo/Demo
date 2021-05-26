@@ -12,7 +12,9 @@ import java.security.MessageDigest
 
 class BlurTransformation(context: Context) : BitmapTransformation() {
 
-    private val rs: RenderScript = RenderScript.create(context)
+    private val rs: RenderScript by lazy {
+        RenderScript.create(context)
+    }
 
     companion object {
         private const val VERSION = 1
@@ -44,8 +46,6 @@ class BlurTransformation(context: Context) : BitmapTransformation() {
         script.forEach(output)
 
         output.copyTo(blurredBitmap)
-
-        toTransform.recycle()
 
         return blurredBitmap
     }

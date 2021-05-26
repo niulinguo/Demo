@@ -7,9 +7,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.lingo.base.image.api.XImageLoadListener
 
-class GlideListener<R, Z>(
-    private val imageLoadListener: XImageLoadListener<Z, R>,
-    private val url: Z,
+class GlideListener<R, T>(
+    private val imageLoadListener: XImageLoadListener<T, R>,
+    private val url: T,
     private val view: ImageView
 ) :
     RequestListener<R> {

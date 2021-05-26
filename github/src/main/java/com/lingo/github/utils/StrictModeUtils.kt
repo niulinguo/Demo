@@ -8,7 +8,13 @@ import java.util.concurrent.Executor
 object StrictModeUtils {
 
     private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore, LeakCanaryIgnore)
-    private val vmPolicyIgnores = listOf(BuglyIgnore)
+    private val vmPolicyIgnores =
+        listOf(
+            BuglyIgnore,
+            WindowInsetsCONSUMEDIgnore,
+            ViewComputeFitSystemWindowsIgnore,
+            ViewGroupMakeOptionalFitsSystemWindowsIgnore
+        )
 
     fun init(debug: Boolean, executor: Executor) {
         if (debug) {
@@ -102,6 +108,36 @@ object BuglyIgnore : ViolationIgnore {
                 && (violation is UntaggedSocketViolation || violation is NonSdkApiUsedViolation)
                 && violation.stackTrace.let { stackTrace ->
             stackTrace.any { it.className.startsWith("com.tencent.bugly") }
+        }
+    }
+}
+
+object WindowInsetsCONSUMEDIgnore : ViolationIgnore {
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message == "Landroid/view/WindowInsets;->CONSUMED:Landroid/view/WindowInsets;"
+        } else {
+            false
+        }
+    }
+}
+
+object ViewComputeFitSystemWindowsIgnore : ViolationIgnore {
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message == "Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z"
+        } else {
+            false
+        }
+    }
+}
+
+object ViewGroupMakeOptionalFitsSystemWindowsIgnore : ViolationIgnore {
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message == "Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V"
+        } else {
+            false
         }
     }
 }
