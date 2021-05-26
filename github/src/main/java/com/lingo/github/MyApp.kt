@@ -8,6 +8,7 @@ import android.os.StrictMode
 import com.facebook.stetho.Stetho
 import com.lingo.github.utils.AppExecutors
 import com.lingo.github.utils.StrictModeUtils
+import com.lingo.github.utils.TimeRecorder
 import com.tencent.bugly.crashreport.CrashReport
 import java.io.BufferedReader
 import java.io.FileReader
@@ -16,6 +17,11 @@ import java.io.FileReader
 class MyApp : Application() {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val appExecutors: AppExecutors = AppExecutors(handler)
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        TimeRecorder.startRecord()
+    }
 
     override fun onCreate() {
         super.onCreate()

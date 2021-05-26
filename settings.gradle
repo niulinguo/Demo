@@ -2,3 +2,4 @@ include ':structure'
 include ':app'
 rootProject.name = "Demo"
 include ':github'
+include ':library:base_image'
