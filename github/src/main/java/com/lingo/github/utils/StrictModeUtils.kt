@@ -3,9 +3,12 @@ package com.lingo.github.utils
 import android.os.Build
 import android.os.StrictMode
 import android.os.strictmode.*
+import timber.log.Timber
 import java.util.concurrent.Executor
 
 object StrictModeUtils {
+
+    private const val TAG = "StrictModeUtils"
 
     private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore, LeakCanaryIgnore)
     private val vmPolicyIgnores =
@@ -13,7 +16,11 @@ object StrictModeUtils {
             BuglyIgnore,
             WindowInsetsCONSUMEDIgnore,
             ViewComputeFitSystemWindowsIgnore,
-            ViewGroupMakeOptionalFitsSystemWindowsIgnore
+            ViewGroupMakeOptionalFitsSystemWindowsIgnore,
+            RecyclerViewIgnore,
+            OkHttpIgnore,
+            RetrofitIgnore,
+            GsonIgnore,
         )
 
     fun init(debug: Boolean, executor: Executor) {
@@ -30,7 +37,7 @@ object StrictModeUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             builder.penaltyListener(executor) { violation ->
                 if (threadPolicyIgnores.all { !it.ignore(violation) }) {
-                    println("thread policy")
+                    Timber.tag(TAG).e("thread policy")
                     throw violation
                 }
             }
@@ -51,7 +58,7 @@ object StrictModeUtils {
                 .detectNonSdkApiUsage()
                 .penaltyListener(executor) { violation ->
                     if (vmPolicyIgnores.all { !it.ignore(violation) }) {
-                        println("vm policy")
+                        Timber.tag(TAG).e("vm policy")
                         throw violation
                     }
                 }
@@ -136,6 +143,65 @@ object ViewGroupMakeOptionalFitsSystemWindowsIgnore : ViolationIgnore {
     override fun ignore(violation: Violation): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             violation is NonSdkApiUsedViolation && violation.message == "Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V"
+        } else {
+            false
+        }
+    }
+}
+
+object RecyclerViewIgnore : ViolationIgnore {
+    private val errorMsgList: List<String> = listOf(
+        "Landroid/os/Trace;->TRACE_TAG_APP:J",
+        "Landroid/os/Trace;->isTagEnabled(J)Z",
+        "Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V"
+    )
+
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message in errorMsgList
+        } else {
+            false
+        }
+    }
+}
+
+object OkHttpIgnore : ViolationIgnore {
+    private val errorMsgList: List<String> = listOf(
+        "Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setUseSessionTickets(Z)V",
+        "Ldalvik/system/CloseGuard;->get()Ldalvik/system/CloseGuard;",
+    )
+
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message in errorMsgList
+        } else {
+            false
+        }
+    }
+}
+
+object RetrofitIgnore : ViolationIgnore {
+    private val errorMsgList: List<String> = listOf(
+        "Ljava/lang/invoke/MethodHandles\$Lookup;-><init>(Ljava/lang/Class;I)V",
+    )
+
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message in errorMsgList
+        } else {
+            false
+        }
+    }
+}
+
+object GsonIgnore : ViolationIgnore {
+    private val errorMsgList: List<String> = listOf(
+        "Lsun/misc/Unsafe;->theUnsafe:Lsun/misc/Unsafe;",
+    )
+
+    override fun ignore(violation: Violation): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message in errorMsgList
         } else {
             false
         }

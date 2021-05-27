@@ -2,6 +2,7 @@ package com.lingo.github
 
 import android.app.Application
 import android.content.Context
+import android.content.ContextWrapper
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
@@ -13,13 +14,27 @@ import com.tencent.bugly.crashreport.CrashReport
 import java.io.BufferedReader
 import java.io.FileReader
 
-@Suppress("unused")
+object AppContext : ContextWrapper(null) {
+    private val app: MyApp by lazy {
+        baseContext as MyApp
+    }
+
+    public override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+    }
+
+    val appExecutors: AppExecutors by lazy {
+        app.appExecutors
+    }
+}
+
 class MyApp : Application() {
     private val handler: Handler = Handler(Looper.getMainLooper())
-    private val appExecutors: AppExecutors = AppExecutors(handler)
+    val appExecutors: AppExecutors = AppExecutors(handler)
 
-    override fun attachBaseContext(base: Context?) {
+    override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
+        AppContext.attachBaseContext(this)
         TimeRecorder.startRecord()
     }
 
