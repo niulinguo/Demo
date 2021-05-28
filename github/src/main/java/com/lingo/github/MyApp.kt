@@ -7,10 +7,11 @@ import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
+import com.lingo.github.performance.TimeRecorder
 import com.lingo.github.utils.AppExecutors
 import com.lingo.github.utils.StrictModeUtils
-import com.lingo.github.utils.TimeRecorder
 import com.tencent.bugly.crashreport.CrashReport
+import timber.log.Timber
 import java.io.BufferedReader
 import java.io.FileReader
 
@@ -47,6 +48,10 @@ class MyApp : Application() {
         val appVersion = BuildConfig.VERSION_NAME
         val debug = BuildConfig.DEBUG
         val channel = "default"
+
+        if (debug) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         // init bugly
         val strategy = CrashReport.UserStrategy(this)

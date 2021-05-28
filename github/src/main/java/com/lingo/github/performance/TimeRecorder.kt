@@ -1,9 +1,11 @@
-package com.lingo.github.utils
+package com.lingo.github.performance
 
-import android.util.Log
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 object TimeRecorder {
+
+    private const val TAG: String = "TimeRecorder"
 
     private var time by Delegates.notNull<Long>()
 
@@ -12,7 +14,11 @@ object TimeRecorder {
     }
 
     fun endRecord() {
+        endRecord("")
+    }
+
+    fun endRecord(msg: String) {
         val cost = System.currentTimeMillis() - time
-        Log.i("TimeRecorder", "cost $cost")
+        Timber.tag(TAG).i("$msg cost $cost")
     }
 }

@@ -153,7 +153,10 @@ object RecyclerViewIgnore : ViolationIgnore {
     private val errorMsgList: List<String> = listOf(
         "Landroid/os/Trace;->TRACE_TAG_APP:J",
         "Landroid/os/Trace;->isTagEnabled(J)Z",
-        "Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V"
+        "Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V",
+        "Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V",
+        "Landroid/os/Trace;->traceCounter(JLjava/lang/String;I)V",
+        "Landroid/view/View;->mAccessibilityDelegate:Landroid/view/View\$AccessibilityDelegate;",
     )
 
     override fun ignore(violation: Violation): Boolean {
@@ -169,6 +172,10 @@ object OkHttpIgnore : ViolationIgnore {
     private val errorMsgList: List<String> = listOf(
         "Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setUseSessionTickets(Z)V",
         "Ldalvik/system/CloseGuard;->get()Ldalvik/system/CloseGuard;",
+        "Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setHostname(Ljava/lang/String;)V",
+        "Lcom/android/org/conscrypt/OpenSSLSocketImpl;->getAlpnSelectedProtocol()[B",
+        "Ldalvik/system/CloseGuard;->open(Ljava/lang/String;)V",
+        "Ldalvik/system/CloseGuard;->warnIfOpen()V",
     )
 
     override fun ignore(violation: Violation): Boolean {
