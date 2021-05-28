@@ -2,7 +2,7 @@ package com.lingo.github.libs.retrofit
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.lingo.github.AppContext
+import com.lingo.github.app.AppManager
 import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -29,7 +29,7 @@ object XRetrofit {
     private val okHttp: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(logging)
-            .dispatcher(Dispatcher(AppContext.appExecutors.networkExecutor))
+            .dispatcher(Dispatcher(AppManager.appExecutors.networkExecutor))
             .build()
     }
 
@@ -38,7 +38,7 @@ object XRetrofit {
             .client(okHttp)
             .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .callbackExecutor(AppContext.appExecutors.uiExecutor)
+            .callbackExecutor(AppManager.appExecutors.uiExecutor)
             .build()
     }
 
