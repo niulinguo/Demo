@@ -12,12 +12,11 @@ object AppManager {
     val appExecutors: AppExecutors = AppExecutors(handler)
 
     fun init(config: AppConfigData) {
-        if (!hasInit) {
-            this.hasInit = true
-            this.config = config
-            return
+        if (hasInit) {
+            throw RuntimeException("不要重复初始化config")
         }
-        throw RuntimeException("不要重复初始化config")
+        this.hasInit = true
+        this.config = config
     }
 
     fun getConfig(): AppConfigData {
@@ -25,7 +24,7 @@ object AppManager {
     }
 
     fun mainHandler(): Handler {
-        return handler
+        return this.handler
     }
 
     fun context(): Context {
