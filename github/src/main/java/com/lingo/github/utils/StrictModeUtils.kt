@@ -10,7 +10,7 @@ object StrictModeUtils {
 
     private const val TAG = "StrictModeUtils"
 
-    private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore, LeakCanaryIgnore)
+    private val threadPolicyIgnores = listOf(AwareBitmapCacherIgnore, LeakCanaryIgnore, BuglyIgnore)
     private val vmPolicyIgnores =
         listOf(
             BuglyIgnore,
@@ -21,6 +21,7 @@ object StrictModeUtils {
             OkHttpIgnore,
             RetrofitIgnore,
             GsonIgnore,
+            LeakCanaryIgnore,
         )
 
     fun init(debug: Boolean, executor: Executor) {
@@ -85,11 +86,17 @@ interface ViolationIgnore {
 }
 
 object LeakCanaryIgnore : ViolationIgnore {
+    private val errorMsgList: List<String> = listOf(
+        "Landroid/view/WindowManagerGlobal;->getInstance()Landroid/view/WindowManagerGlobal;",
+        "Landroid/app/ActivityThread;->mH:Landroid/app/ActivityThread\$H;",
+        "Landroid/view/WindowManagerGlobal;->mViews:Ljava/util/ArrayList;",
+    )
+
     override fun ignore(violation: Violation): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                && violation is DiskReadViolation
-                && violation.stackTrace.let { stackTrace ->
-            stackTrace.any { it.className.startsWith("leakcanary.") }
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            violation is NonSdkApiUsedViolation && violation.message in errorMsgList
+        } else {
+            false
         }
     }
 }
@@ -110,6 +117,11 @@ object BuglyIgnore : ViolationIgnore {
             return violation.cause?.stackTrace?.let { stackTrace ->
                 stackTrace.any { it.className.startsWith("com.tencent.bugly") }
             } ?: false
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && violation is DiskReadViolation) {
+            return violation.stackTrace.let { stackTrace ->
+                stackTrace.any { it.className.startsWith("com.tencent.bugly") }
+            }
         }
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                 && (violation is UntaggedSocketViolation || violation is NonSdkApiUsedViolation)
