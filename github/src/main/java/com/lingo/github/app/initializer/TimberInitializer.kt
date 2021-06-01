@@ -1,11 +1,13 @@
-package com.lingo.github.app
+package com.lingo.github.app.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
+import com.lingo.github.app.AppManager
 import timber.log.Timber
 
-class TimberInitializer : Initializer<Unit> {
-    override fun create(context: Context) {
+class TimberInitializer : BaseInitializer<Unit>() {
+
+    override fun onCreate(context: Context) {
         if (AppManager.getConfig().printLog) {
             Timber.plant(Timber.DebugTree())
         }

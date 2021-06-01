@@ -1,11 +1,12 @@
-package com.lingo.github.app
+package com.lingo.github.app.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
+import com.lingo.github.app.AppManager
 import com.lingo.github.utils.StrictModeUtils
 
-class StrictModeInitializer : Initializer<Unit> {
-    override fun create(context: Context) {
+class StrictModeInitializer : BaseInitializer<Unit>() {
+    override fun onCreate(context: Context) {
         val config = AppManager.getConfig()
         if (config.strictMode) {
             StrictModeUtils.init(true, AppManager.appExecutors.ioExecutor)

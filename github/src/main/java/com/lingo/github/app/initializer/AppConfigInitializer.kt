@@ -1,15 +1,17 @@
-package com.lingo.github.app
+package com.lingo.github.app.initializer
 
 import android.app.Application
 import android.content.Context
 import android.os.Process
 import androidx.startup.Initializer
 import com.lingo.github.BuildConfig
+import com.lingo.github.app.AppConfigData
+import com.lingo.github.app.AppManager
 import java.io.BufferedReader
 import java.io.FileReader
 
-class AppConfigInitializer : Initializer<AppConfigData> {
-    override fun create(context: Context): AppConfigData {
+class AppConfigInitializer : BaseInitializer<AppConfigData>() {
+    override fun onCreate(context: Context): AppConfigData {
         val config = AppConfigData.builder()
             .setContext(context.applicationContext as Application)
             .setPackageName(context.packageName)

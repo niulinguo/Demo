@@ -34,19 +34,19 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.lingo.github.app.AppConfigInitializer"
+                android:name="com.lingo.github.app.initializer.AppConfigInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.lingo.github.app.BuglyInitializer"
+                android:name="com.lingo.github.app.initializer.BuglyInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.lingo.github.app.TimberInitializer"
+                android:name="com.lingo.github.app.initializer.TimberInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.lingo.github.app.StrictModeInitializer"
+                android:name="com.lingo.github.app.initializer.StrictModeInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.lingo.github.app.StethoInitializer"
+                android:name="com.lingo.github.app.initializer.StethoInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

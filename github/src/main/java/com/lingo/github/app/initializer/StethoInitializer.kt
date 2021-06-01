@@ -1,11 +1,12 @@
-package com.lingo.github.app
+package com.lingo.github.app.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
 import com.facebook.stetho.Stetho
+import com.lingo.github.app.AppManager
 
-class StethoInitializer : Initializer<Unit> {
-    override fun create(context: Context) {
+class StethoInitializer : BaseInitializer<Unit>() {
+    override fun onCreate(context: Context) {
         if (AppManager.getConfig().stetho) {
             Stetho.initializeWithDefaults(context)
         }
