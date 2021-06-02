@@ -1,8 +1,11 @@
 package com.lingo.github.app.initializer
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.os.Looper
 import android.os.Process
+import android.util.Log
 import androidx.startup.Initializer
 import com.lingo.github.BuildConfig
 import com.lingo.github.app.AppConfigData
@@ -11,6 +14,12 @@ import java.io.BufferedReader
 import java.io.FileReader
 
 class AppConfigInitializer : BaseInitializer<AppConfigData>() {
+
+    companion object {
+        private const val TAG = "AppConfigInitializer"
+    }
+
+    @SuppressLint("LogNotTimber")
     override fun onCreate(context: Context): AppConfigData {
         val config = AppConfigData.builder()
             .setContext(context.applicationContext as Application)
@@ -26,6 +35,13 @@ class AppConfigInitializer : BaseInitializer<AppConfigData>() {
             .openStetho()
             .build()
         AppManager.init(config)
+
+        Looper.getMainLooper().setMessageLogging {
+            if (config.printLog) {
+                Log.i(TAG, it)
+            }
+        }
+
         return config
     }
 
