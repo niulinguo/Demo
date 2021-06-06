@@ -3,3 +3,4 @@ include ':app'
 rootProject.name = "Demo"
 include ':github'
 include ':library:base_image'
+include ':my:retrofit'
