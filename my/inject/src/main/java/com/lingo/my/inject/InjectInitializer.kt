@@ -18,11 +18,10 @@ class InjectInitializer : Initializer<Unit> {
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Inject.inject(activity)
+                Inject.injectEvent(activity)
             }
 
             override fun onActivityPaused(activity: Activity) {
-                Inject.uninstall(activity)
             }
 
             override fun onActivityStopped(activity: Activity) {
