@@ -2,6 +2,6 @@ package com.lingo.my.inject.annotation
 
 import androidx.annotation.IdRes
 
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class OnClick(@IdRes val value: IntArray)
+annotation class InjectView(@IdRes val value: Int)

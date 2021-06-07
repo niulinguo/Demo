@@ -4,21 +4,29 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.startup.Initializer
 
 class InjectInitializer : Initializer<Unit> {
+    private val handler: Handler = Handler(Looper.getMainLooper())
+
     override fun create(context: Context) {
         val application: Application = context as Application
         application.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                handler.post {
+                    Inject.injectView(activity)
+                    Inject.injectEvent(activity)
+                }
             }
 
             override fun onActivityStarted(activity: Activity) {
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Inject.injectEvent(activity)
+
             }
 
             override fun onActivityPaused(activity: Activity) {
