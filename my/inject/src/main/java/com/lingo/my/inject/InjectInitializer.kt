@@ -20,6 +20,7 @@ class InjectInitializer : Initializer<Unit> {
                     Inject.injectView(activity)
                     Inject.injectEvent(activity)
                 }
+                Inject.injectAutowired(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {

@@ -82,4 +82,5 @@ dependencies {
 
     implementation project(":library:base_image")
     kapt project(":demo:compiler")
+    implementation project(":structure")
 }
