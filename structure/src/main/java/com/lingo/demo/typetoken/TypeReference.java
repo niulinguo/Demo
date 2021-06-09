@@ -1,4 +1,4 @@
-package com.lingo.demo;
+package com.lingo.demo.typetoken;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

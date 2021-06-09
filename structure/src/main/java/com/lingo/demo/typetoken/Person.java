@@ -1,4 +1,4 @@
-package com.lingo.demo;
+package com.lingo.demo.typetoken;
 
 public class Person {
     private final String name;
