@@ -18,7 +18,7 @@ Java_com_lingo_dexdiff_BsPatchUtils_patch(JNIEnv *env, jclass clazz,
     argv[2] = const_cast<char *>(env->GetStringUTFChars(new_apk, 0));
     argv[3] = const_cast<char *>(env->GetStringUTFChars(patch, 0));
 
-    int result = bspatch_main(4, argv);
+    int result = bspatch_main(argc, argv);
 
     env->ReleaseStringUTFChars(old_apk, argv[1]);
     env->ReleaseStringUTFChars(new_apk, argv[2]);
