@@ -2,7 +2,7 @@ package com.lingo.demo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.lingo.demo.proxy.ProxyDemo
+import com.lingo.demo.rxjava.RxJavaMain
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
 
 //        RetrofitDemo.main()
 //        OkhttpDemo.main()
-        ProxyDemo.main()
+//        ProxyDemo.main()
+        RxJavaMain.main(null)
     }
 }
