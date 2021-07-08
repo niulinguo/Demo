@@ -8,12 +8,12 @@ import com.lingo.ui.utils.dp
 import kotlin.math.cos
 import kotlin.math.sin
 
-val RADIUS = 150f.dp
-val LENGTH = RADIUS * 0.8
-const val OPEN_ANGLE = 120
-val DASH_WIDTH = 2f.dp
-val DASH_HEIGHT = 10f.dp
-const val DASH_COUNT = 20
+private val RADIUS = 150f.dp
+private val LENGTH = RADIUS * 0.8
+private const val OPEN_ANGLE = 120
+private val DASH_WIDTH = 2f.dp
+private val DASH_HEIGHT = 10f.dp
+private const val DASH_COUNT = 20
 
 class DashboardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
