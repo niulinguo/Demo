@@ -68,5 +68,22 @@ class SportView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         paint.strokeWidth = 1.dp
         paint.color = Color.CYAN
         canvas.drawLine(centerX - RADIUS, centerY, centerX + RADIUS, centerY, paint)
+
+        textPaint.textAlign = Paint.Align.LEFT
+        textPaint.textSize = 150.dp
+        textPaint.getTextBounds(showText, 0, showText.length, textBounds)
+        textPaint.getFontMetrics(fontMetrics)
+        canvas.drawText(showText, 0f - textBounds.left, 0f - textBounds.top, textPaint)
+
+        textBounds.offset(-textBounds.left, -textBounds.top)
+        canvas.drawRect(textBounds, paint)
+
+        textPaint.textSize = 15.dp
+        textPaint.getTextBounds(showText, 0, showText.length, textBounds)
+        textPaint.getFontMetrics(fontMetrics)
+        canvas.drawText(showText, 0f - textBounds.left, 0f - textBounds.top, textPaint)
+
+        textBounds.offset(-textBounds.left, -textBounds.top)
+        canvas.drawRect(textBounds, paint)
     }
 }
