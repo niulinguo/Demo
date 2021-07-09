@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.withSave
 import com.lingo.ui.R
 import com.lingo.ui.utils.Utils
 import com.lingo.ui.utils.dp
@@ -21,41 +22,63 @@ class CameraView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
     private val camera = Camera()
 
+    private var topFlip = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    private var bottomFlip = 30f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    private var flipRotation = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     init {
-        camera.rotateX(60f)
         camera.setLocation(0f, 0f, -6 * Resources.getSystem().displayMetrics.density)
     }
 
     override fun onDraw(canvas: Canvas) {
         val bitmapCenter = bitmapPadding + bitmapSize / 2
 
-        canvas.save()
-        canvas.translate(bitmapCenter, bitmapCenter)
-        canvas.rotate(-30f)
-        canvas.clipRect(
-            -bitmapSize,
-            -bitmapSize,
-            bitmapSize,
-            0f,
-        )
-        canvas.rotate(30f)
-        canvas.translate(-bitmapCenter, -bitmapCenter)
-        canvas.drawBitmap(bitmap, bitmapPadding, bitmapPadding, paint)
-        canvas.restore()
+        canvas.withSave {
+            canvas.translate(bitmapCenter, bitmapCenter)
+            canvas.rotate(-flipRotation)
+            camera.save()
+            camera.rotateX(topFlip)
+            camera.applyToCanvas(canvas)
+            camera.restore()
+            canvas.clipRect(
+                -bitmapSize,
+                -bitmapSize,
+                bitmapSize,
+                0f,
+            )
+            canvas.rotate(flipRotation)
+            canvas.translate(-bitmapCenter, -bitmapCenter)
+            canvas.drawBitmap(bitmap, bitmapPadding, bitmapPadding, paint)
+        }
 
-        canvas.save()
-        canvas.translate(bitmapCenter, bitmapCenter)
-        canvas.rotate(-30f)
-        camera.applyToCanvas(canvas)
-        canvas.clipRect(
-            -bitmapSize,
-            0f,
-            bitmapSize,
-            bitmapSize,
-        )
-        canvas.rotate(30f)
-        canvas.translate(-bitmapCenter, -bitmapCenter)
-        canvas.drawBitmap(bitmap, bitmapPadding, bitmapPadding, paint)
-        canvas.restore()
+        canvas.withSave {
+            canvas.translate(bitmapCenter, bitmapCenter)
+            canvas.rotate(-flipRotation)
+            camera.save()
+            camera.rotateX(bottomFlip)
+            camera.applyToCanvas(canvas)
+            camera.restore()
+            canvas.clipRect(
+                -bitmapSize,
+                0f,
+                bitmapSize,
+                bitmapSize,
+            )
+            canvas.rotate(flipRotation)
+            canvas.translate(-bitmapCenter, -bitmapCenter)
+            canvas.drawBitmap(bitmap, bitmapPadding, bitmapPadding, paint)
+        }
     }
 }
