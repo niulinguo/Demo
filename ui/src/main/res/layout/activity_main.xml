@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.lingo.ui.view.CameraView
+    <com.lingo.ui.view.DrawableView
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
