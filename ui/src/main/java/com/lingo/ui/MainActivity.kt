@@ -1,7 +1,11 @@
 package com.lingo.ui
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.lingo.ui.view.CameraView
 
@@ -12,19 +16,23 @@ class MainActivity : AppCompatActivity() {
 
         val view = findViewById<CameraView>(R.id.view)
 
-//        val topFlipAnimator = ObjectAnimator.ofFloat(view, "topFlip", 0f, 60f)
-//        topFlipAnimator.startDelay = 1000
-//        topFlipAnimator.duration = 1500
-//        topFlipAnimator.start()
+        val bottomFlipAnimator = ObjectAnimator.ofFloat(view, "bottomFlip", 0f, 60f)
+        bottomFlipAnimator.startDelay = 1000
+        bottomFlipAnimator.duration = 1000
+        bottomFlipAnimator.interpolator = AccelerateInterpolator()
 
-//        val bottomFlipAnimator = ObjectAnimator.ofFloat(view, "bottomFlip", 0f, 60f)
-//        bottomFlipAnimator.startDelay = 1000
-//        bottomFlipAnimator.duration = 1500
-//        bottomFlipAnimator.start()
+        val flipRotationAnimator = ObjectAnimator.ofFloat(view, "flipRotation", 0f, 270f)
+        flipRotationAnimator.startDelay = 200
+        flipRotationAnimator.duration = 1000
+        flipRotationAnimator.interpolator = AccelerateDecelerateInterpolator()
 
-        val flipRotationAnimator = ObjectAnimator.ofFloat(view, "flipRotation", 0f, 60f)
-        flipRotationAnimator.startDelay = 1000
-        flipRotationAnimator.duration = 1500
-        flipRotationAnimator.start()
+        val topFlipAnimator = ObjectAnimator.ofFloat(view, "topFlip", 0f, -60f)
+        topFlipAnimator.startDelay = 200
+        topFlipAnimator.duration = 1000
+        topFlipAnimator.interpolator = DecelerateInterpolator()
+
+        val animatorSet = AnimatorSet()
+        animatorSet.playSequentially(bottomFlipAnimator, flipRotationAnimator, topFlipAnimator)
+        animatorSet.start()
     }
 }

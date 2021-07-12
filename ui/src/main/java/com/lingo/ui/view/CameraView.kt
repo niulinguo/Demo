@@ -27,7 +27,7 @@ class CameraView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
             field = value
             invalidate()
         }
-    private var bottomFlip = 30f
+    private var bottomFlip = 0f
         set(value) {
             field = value
             invalidate()
