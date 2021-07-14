@@ -2,6 +2,7 @@ package com.lingo.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.lingo.ui.view.MaterialEditText
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,5 +29,10 @@ class MainActivity : AppCompatActivity() {
 //        val animatorSet = AnimatorSet()
 //        animatorSet.playSequentially(bottomFlipAnimator, flipRotationAnimator, topFlipAnimator)
 //        animatorSet.start()
+
+        val view = findViewById<MaterialEditText>(R.id.view)
+//        view.postDelayed(3000) {
+//            view.useFloatingLabel = false
+//        }
     }
 }
