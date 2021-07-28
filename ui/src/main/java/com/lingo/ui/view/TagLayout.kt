@@ -77,4 +77,7 @@ class TagLayout(context: Context, attrs: AttributeSet?) : ViewGroup(context, att
         return MarginLayoutParams(context, attrs)
     }
 
+    override fun shouldDelayChildPressedState(): Boolean {
+        return false
+    }
 }

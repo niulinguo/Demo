@@ -1,6 +1,8 @@
 package com.lingo.ui
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -33,5 +35,10 @@ class MainActivity : AppCompatActivity() {
 //        view.postDelayed(3000) {
 //            view.useFloatingLabel = false
 //        }
+
+        val view = findViewById<View>(R.id.view)
+        view.setOnClickListener {
+            Toast.makeText(this@MainActivity, "点击了", Toast.LENGTH_SHORT).show()
+        }
     }
 }
